@@ -1,0 +1,5 @@
+*.mp3
+*.vscode/
+*.pytest_cache/
+__pycache__/
+*.log
