@@ -53,8 +53,7 @@ def set_temps():
     now = datetime.now()
     for i in temps.keys():
         temps[i]["value"] = request.json[i]["value"]
-        temps[i]["last_modified"] = now.strftime("%d/%m/%Y %H:%M:%S")
-    print(colored(temps, "grey", "on_yellow"))
+        temps[i]["last_modified"] = now.strftime("%m/%d/%Y %H:%M:%S")
     return jsonify({"temps": temps}), 201
 
 # Error handling

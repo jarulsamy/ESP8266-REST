@@ -4,8 +4,6 @@
 
 #include <EEPROM-Loader.h>
 
-#define SENSOR_VOLTAGE 3
-#define SENSOR_PIN A0
 // #define DEBUG
 
 void flashLED();
@@ -15,6 +13,9 @@ EEPROM_DATA data = EEPROM_LOAD();
 const char *ssid = data.ssid;
 const char *password = data.password;
 const char *host = data.host;
+
+const int SENSOR_VOLTAGE = 3;
+const int SENSOR_PIN = A0;
 
 void setup()
 {
@@ -89,21 +90,28 @@ void loop()
         encoder.prettyPrintTo(buff, sizeof(buff));
         // Post to server
         int httpCode = http.POST(buff);
+        // If the POST is unsuccessful, flash the LED and wait
+        // Prevents accidental DDOSing.
+        if (httpCode != 201)
+        {
+            flashLED();
+            delay(1000);
+        }
+
+        http.end();
 
 #ifdef DEBUG
         Serial.println(buff);
         Serial.print("HTTP CODE: ");
         Serial.println(httpCode);
 #endif
-
-        http.end();
     }
     else
     {
         Serial.println("Error in Wifi");
     }
 
-    delay(30000);
+    delay(10000);
     return;
 }
 
