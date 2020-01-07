@@ -35,7 +35,6 @@ def get_temp(_type):
     return jsonify({"temps": temps[_type]})
 
 
-# curl -i -H "Content-Type: application/json" -X POST -d "{"""value""":"""50"""}" http://clock-pi:5000/api/v1.0/temps/celsius
 # Create POST endpoints based on type.
 @app.route("/api/v1.0/temps/<string:_type>", methods=["POST"])
 def set_specific_temp(_type):
@@ -43,8 +42,6 @@ def set_specific_temp(_type):
         abort(400)
 
     temps[_type]["value"] = request.json["value"]
-    print(
-        colored(f"Changed value to {request.json['value']}", "grey", "on_yellow"))
     return jsonify({"temps": temps}), 201
 
 # POST to set BOTH temperatures simultaneously.
